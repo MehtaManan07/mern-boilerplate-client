@@ -5,15 +5,14 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 
-const Signup = () => {
+const Signin = () => {
   const [values, setValues] = useState({
-    name: "",
     email: "",
     password: "",
     buttonText: "Submit",
   });
 
-  const { name, email, password, buttonText } = values;
+  const { email, password, buttonText } = values;
 
   const handleChange = (name) => (event) => {
     // console.log(event.target.value);
@@ -25,38 +24,28 @@ const Signup = () => {
     setValues({ ...values, buttonText: "Submitting" });
     axios({
       method: "POST",
-      url: `${process.env.REACT_APP_PROXY}/signup`,
-      data: { name, email, password },
+      url: `${process.env.REACT_APP_PROXY}/signin`,
+      data: { email, password },
     })
       .then((response) => {
-        console.log("SIGNUP SUCCESS", response);
+        console.log("SIGNIN SUCCESS", response);
         setValues({
           ...values,
-          name: "",
           email: "",
           password: "",
           buttonText: "Submitted",
         });
-        toast.success(response.data.message);
+        toast.success(`Hey, ${response.data.user.name}. Welcome back!`);
       })
       .catch((error) => {
-        console.log("SIGNUP ERROR", error.response.data);
+        console.log("SIGNIN ERROR", error.response.data);
         setValues({ ...values, buttonText: "Submit" });
         toast.error(error.response.data.error);
       });
   };
 
-  const signupForm = () => (
+  const signinForm = () => (
     <form>
-      <div className="form-group">
-        <label className="text-muted">Name</label>
-        <input
-          onChange={handleChange("name")}
-          value={name}
-          type="text"
-          className="form-control"
-        />
-      </div>
       <div className="form-group">
         <label className="text-muted">Email</label>
         <input
@@ -88,10 +77,10 @@ const Signup = () => {
       <div className="col-md-6 offset-md-3">
         <ToastContainer />
         <h1 className="p-5 text-center">REGISTER</h1>
-        {signupForm()}
+        {signinForm()}
       </div>
     </Layout>
   );
 };
 
-export default Signup;
+export default Signin;
