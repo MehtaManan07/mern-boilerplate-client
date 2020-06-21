@@ -8,8 +8,8 @@ import Layout from "../core/Layout";
 
 const Signin = ({ history }) => {
   const [values, setValues] = useState({
-    email: "",
-    password: "",
+    email: "mananmehta0507",
+    password: "password",
     buttonText: "Submit",
   });
 

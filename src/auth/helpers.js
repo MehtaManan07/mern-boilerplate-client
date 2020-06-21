@@ -3,21 +3,18 @@ import cookie from "js-cookie";
 // set in cookie
 export const setCookie = (key, value) => {
   if (window !== "undefined") {
-    console.log("window is defined");
     cookie.set(key, value, { expires: 1 });
   }
 };
 // remove from cookie
 export const removeCookie = (key) => {
   if (window !== "undefined") {
-    console.log("window is defined");
     cookie.remove(key, { expires: 1 });
   }
 };
 // get from cookie such as stored token
 export const getCookie = (key) => {
   if (window !== "undefined") {
-    console.log("window is defined");
     return cookie.get(key);
   }
 };
@@ -25,14 +22,12 @@ export const getCookie = (key) => {
 // set in localstorage
 export const setLocalStorage = (key, value) => {
   if (window !== "undefined") {
-    console.log("window is defined");
     localStorage.setItem(key, JSON.stringify(value));
   }
 };
 // remove from localstorage
 export const removeLocalStorage = (key) => {
   if (window !== "undefined") {
-    console.log("window is defined");
     localStorage.removeItem(key);
   }
 };
@@ -64,3 +59,12 @@ export const signout = (next) => {
   removeLocalStorage("user");
   next();
 };
+
+export const updateUser = (response, next) => {
+  console.log("UPDATED USER IN LOCAL:", response)
+  if(typeof window !== 'undefined') {
+    let auth = JSON.parse(localStorage.getItem('user'))
+    auth = response.data
+    localStorage.setItem('user', JSON.stringify(auth))
+  }
+}
