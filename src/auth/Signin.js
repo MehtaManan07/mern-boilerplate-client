@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
-import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.min.css";
-import { authenticate, isAuth } from "./helpers";
 import Layout from "../core/Layout";
+import axios from "axios";
+import { authenticate, isAuth } from "./helpers";
+import { ToastContainer, toast } from "react-toastify";
+import Google from "./Google";
+import "react-toastify/dist/ReactToastify.min.css";
 
 const Signin = ({ history }) => {
   const [values, setValues] = useState({
-    email: "mananmehta0507",
+    email: "mananmehta0507@gmail.com",
     password: "password",
     buttonText: "Submit",
   });
@@ -18,6 +19,14 @@ const Signin = ({ history }) => {
   const handleChange = (name) => (event) => {
     // console.log(event.target.value);
     setValues({ ...values, [name]: event.target.value });
+  };
+
+  const informParent = (response) => {
+    authenticate(response, () => {
+      isAuth() && isAuth().role === "admin"
+        ? history.push("/admin")
+        : history.push("/private");
+    });
   };
 
   const clickSubmit = (event) => {
@@ -30,14 +39,16 @@ const Signin = ({ history }) => {
     })
       .then((response) => {
         console.log("SIGNIN SUCCESS", response);
+        // save the response (user, token) localstorage/cookie
         authenticate(response, () => {
           setValues({
             ...values,
+            name: "",
             email: "",
             password: "",
             buttonText: "Submitted",
           });
-          // toast.success(`Hey, ${response.data.user.name}. Welcome back!`);
+          // toast.success(`Hey ${response.data.user.name}, Welcome back!`);
           isAuth() && isAuth().role === "admin"
             ? history.push("/admin")
             : history.push("/private");
@@ -61,6 +72,7 @@ const Signin = ({ history }) => {
           className="form-control"
         />
       </div>
+
       <div className="form-group">
         <label className="text-muted">Password</label>
         <input
@@ -70,8 +82,9 @@ const Signin = ({ history }) => {
           className="form-control"
         />
       </div>
+
       <div>
-        <button className="btn btn-dark" onClick={clickSubmit}>
+        <button className="btn btn-primary" onClick={clickSubmit}>
           {buttonText}
         </button>
       </div>
@@ -84,6 +97,7 @@ const Signin = ({ history }) => {
         <ToastContainer />
         {isAuth() ? <Redirect to="/" /> : null}
         <h1 className="p-5 text-center">Signin</h1>
+        <Google informParent={informParent} />
         {signinForm()}
         <br />
         <Link
@@ -96,4 +110,5 @@ const Signin = ({ history }) => {
     </Layout>
   );
 };
+
 export default Signin;
