@@ -60,7 +60,7 @@ const Forgot = ({ history }) => {
     <Layout>
       <div className="col-md-6 offset-md-3">
         <ToastContainer />
-        <h1 className="p-5 text-center">RESET PASSWORD</h1>
+        <h1 className="p-5 text-center">FORGOT PASSWORD</h1>
         {forgotPasswordForm()}
       </div>
       </Layout>

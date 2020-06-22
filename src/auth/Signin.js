@@ -38,7 +38,9 @@ const Signin = ({ history }) => {
             buttonText: "Submitted",
           });
           // toast.success(`Hey, ${response.data.user.name}. Welcome back!`);
-          isAuth() && isAuth().role === 'admin' ? history.push('/admin') : history.push('/private')
+          isAuth() && isAuth().role === "admin"
+            ? history.push("/admin")
+            : history.push("/private");
         });
       })
       .catch((error) => {
@@ -80,12 +82,18 @@ const Signin = ({ history }) => {
     <Layout>
       <div className="col-md-6 offset-md-3">
         <ToastContainer />
-        {isAuth() && <Redirect to="/" />}
-        <h1 className="p-5 text-center">LOGIN</h1>
+        {isAuth() ? <Redirect to="/" /> : null}
+        <h1 className="p-5 text-center">Signin</h1>
         {signinForm()}
+        <br />
+        <Link
+          to="/auth/password/forgot"
+          className="btn btn-sm btn-outline-danger"
+        >
+          Forgot Password
+        </Link>
       </div>
-      </Layout>
+    </Layout>
   );
 };
-
 export default Signin;
